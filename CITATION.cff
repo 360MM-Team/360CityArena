@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite the ECCV paper."
+title: "360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents"
+authors:
+  - family-names: "Watanabe"
+    given-names: "Kenta"
+  - family-names: "Miyai"
+    given-names: "Atsuyuki"
+  - family-names: "Takenawa"
+    given-names: "Mizuki"
+  - family-names: "Aizawa"
+    given-names: "Kiyoharu"
+  - family-names: "Yamasaki"
+    given-names: "Toshihiko"
+conference:
+  name: "European Conference on Computer Vision"
+  short-name: "ECCV"
+year: 2026
+license: "Apache-2.0"

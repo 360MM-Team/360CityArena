@@ -1,0 +1,26 @@
+task_id,initial_index,range,object,gt,difficulty
+4001,104,the full perimeter of the block to your left,vending machines,10,Easy
+4002,176,the road up to the next crosswalk,planted trees,6,Medium
+4003,104,the full perimeter of the block to your left,shops visible on the first floor,9,Hard
+4004,149,the road straight ahead up to the railway tracks,planted trees,10,Hard
+4005,235,the right side of the road up to the next crosswalk,shops visible on the first floor,5,Medium
+4006,341,the full perimeter of the block to your left,streetlights,5,Hard
+4007,433,the road up to the next crosswalk,streetlights,4,Medium
+4008,424,the road up to the next crosswalk,vending machines,4,Easy
+4009,424,the road up to the next crosswalk,planted trees,13,Hard
+4010,226,the full perimeter of the block to your left,vending machines,3,Medium
+4011,576,the full perimeter of the block to your left,shops visible on the first floor,7,Hard
+4012,571,the full perimeter of the block to your right,vending machines,3,Easy
+4013,571,the full perimeter of the block to your right,streetlights,3,Medium
+4014,571,the full perimeter of the block to your right,traffic signs,6,Hard
+4015,549,the full perimeter of the block to your right,streetlights,1,Easy
+4016,492,the full perimeter of the block to your right,planted trees,5,Medium
+4017,545,the full perimeter of the block to your left,traffic signs,2,Easy
+4018,221,the road up to the next crosswalk,planted trees,6,Medium
+4019,221,the road up to the next crosswalk,streetlights,3,Easy
+4020,372,the full perimeter of the block to your right,shops visible on the first floor,13,Hard
+4021,79,the full perimeter of the block to your left,traffic signs,5,Medium
+4022,554,the full perimeter of the block to your left,traffic signs,3,Easy
+4023,277,the full perimeter of the block to your left,shops visible on the first floor,13,Hard
+4024,277,the full perimeter of the block to your left,vending machines,5,Hard
+4025,284,the full perimeter of the block to your left,traffic signs,2,Easy

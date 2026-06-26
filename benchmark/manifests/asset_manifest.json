@@ -1,0 +1,9 @@
+{
+  "benchmark_name": "360CityArena",
+  "version": "0.1.0",
+  "assets": [
+    {"path": "benchmark/assets/localization/map_localization.png", "count": 1, "used_by": "Localization"},
+    {"path": "benchmark/assets/landmark_images", "count": 25, "used_by": "LandmarkSearchWithImage"},
+    {"path": "benchmark/assets/navigation_maps", "count": 25, "used_by": "MapNavigation"}
+  ]
+}

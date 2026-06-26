@@ -1,0 +1,12 @@
+360CityArena
+
+Code is licensed under Apache-2.0.
+Dataset and benchmark assets are licensed under CC BY-NC 4.0 unless otherwise noted.
+
+Map-derived assets include OpenStreetMap data.
+Map data copyright OpenStreetMap contributors and is available under the Open Database
+License (ODbL): https://www.openstreetmap.org/copyright
+
+This repository intentionally excludes prior experiment outputs, raw logs, prompt HTML/JSON, and analysis artifacts. New runtime outputs are written under outputs/ and are ignored by Git.
+
+Third-party packages are managed by Unity Package Manager and Python package managers. Check package manifests and upstream package metadata for their respective license terms.

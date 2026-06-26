@@ -1,0 +1,37 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+**/.venv/
+.pytest_cache/
+
+# Unity generated files
+unity/Library/
+unity/Library 2/
+unity/Temp/
+unity/Obj/
+unity/Build/
+unity/Builds/
+unity/UserSettings/
+unity/MemoryCaptures/
+unity/Recordings/
+
+# Runtime and experiment outputs
+outputs/
+logs/
+unity/Experiment/
+unity/PythonLogs/
+unity/Logs/
+unity/Outputs/
+unity/TempImages/
+unity/Assets/CapturedImages/
+python/PythonLogs/
+
+# Local editor files
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,26 @@
+task_id,initial_index,landmark,gt_x,gt_y,difficulty
+2001,122,Akihabara Station Entrance,341.12,195.97,Easy
+2002,174,Bic Camera,237.54,331.41,Hard
+2003,311,Doutor Coffee,67.67,287.39,Hard
+2004,232,Bushoya,580.03,349.61,Easy
+2005,290,TSUKUMO,124.29,248.45,Medium
+2006,2,Jonathan’s,74.58,705.14,Medium
+2007,31,Gindaco,200.25,701.33,Easy
+2008,153,EXCELSIOR CAFFÉ,220.97,509.17,Hard
+2009,94,MOS Burger,229.25,595.94,Medium
+2010,170,Matsumoto Kiyoshi,227.87,583.67,Easy
+2011,10,Café EURO,143.63,509.6,Hard
+2012,242,Go! Go! Curry,203.01,310.67,Medium
+2013,126,Yoshinoya,201.63,304.74,Hard
+2014,237,KOTOBUKIYA,149.15,261.15,Hard
+2015,194,SEGA,153.29,206.12,Easy
+2016,341,Hidakaya,499.93,85.92,Medium
+2017,338,BOOKOFF,415.69,82.11,Hard
+2018,424,NTT docomo,491.65,233.64,Easy
+2019,229,Yoshinoya,524.79,297.55,Medium
+2020,378,SQUARE ENIX CAFE,383.93,144.33,Hard
+2021,434,BIG ECHO,501.32,142.64,Easy
+2022,405,Ifu,551.03,94.39,Medium
+2023,403,McDonald’s,523.41,180.31,Easy
+2024,34,Fashion Cleaning,348.02,693.71,Medium
+2025,163,animate,244.44,392.78,Hard
