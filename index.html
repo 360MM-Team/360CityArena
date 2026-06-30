@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+        content="360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents. A photorealistic benchmark built from 360-degree videos of Tokyo's Akihabara district with 175 human-crafted tasks.">
+  <meta name="keywords"
+        content="Embodied AI, Urban Navigation Benchmark, Photorealistic Virtual Environments, 360 video, LMM, Vision-Language Navigation, Akihabara">
+  <title>360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents">
+  <meta property="og:description" content="A photorealistic urban-district benchmark built from 360-degree videos of Akihabara, with 175 human-crafted tasks across Environment Understanding, Path Reasoning, and Spatial Reasoning.">
+  <meta property="og:type" content="website">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/custom.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- ============================ HERO / TITLE ============================ -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">360CityArena</h1>
+          <h2 class="subtitle is-3 publication-title" style="margin-top:-0.4rem;">A Realistic Virtual Urban Navigation Benchmark for Embodied Agents</h2>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="#">Kenta Watanabe</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="#">Atsuyuki Miyai</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="#">Mizuki Takenawa</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="#">Kiyoharu Aizawa</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="#">Toshihiko Yamasaki</a><sup>1</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>The University of Tokyo, Tokyo, Japan</span>
+          </div>
+
+          <div class="has-text-centered">
+            <span class="publication-venue">ECCV 2026</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Paper Link (TODO: replace href with arXiv/PDF URL) -->
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link -->
+              <span class="link-block">
+                <a href="https://github.com/360MM-Team/360CityArena" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABSTRACT ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present <b>360CityArena</b>, a benchmark for evaluating the urban exploration capabilities of Embodied
+            Agents within a photorealistic environment constructed from 360&deg; videos. Existing outdoor benchmarks
+            either lack sufficient photorealism and complexity, resulting in a considerable gap from real-world urban
+            environments. 360CityArena is built on a realistic reconstruction of the Akihabara district in Tokyo, Japan,
+            using <b>602 360&deg; video segments covering 85 streets</b>, and consists of <b>175 meticulously human-crafted
+            tasks</b>. It encompasses three task categories &mdash; Environment Understanding, Path Reasoning, and Spatial
+            Reasoning &mdash; covering fundamental abilities required for urban exploration, such as localization, landmark
+            search, path planning, and relational spatial reasoning, thereby enabling comprehensive evaluation in realistic
+            urban scenes. Our evaluation using state-of-the-art LMM-based agents shows that even the strongest model,
+            Gemini-2.5 Flash, performs far below human level
+            (<b>human: 77.3%</b> vs. <b>Gemini-2.5 Flash: 17.1%</b>), revealing substantial challenges that remain in
+            city-scale embodied navigation and reasoning. 360CityArena provides a necessary and challenging testbed for
+            photorealistic urban-district navigation and spatial reasoning.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HIGHLIGHTS ============================ -->
+<section class="section" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered is-multiline has-text-centered">
+      <div class="column is-2-desktop is-4-tablet is-6-mobile">
+        <div class="stat-card">
+          <div class="stat-number">175</div>
+          <div class="stat-label">human-crafted tasks</div>
+        </div>
+      </div>
+      <div class="column is-2-desktop is-4-tablet is-6-mobile">
+        <div class="stat-card">
+          <div class="stat-number">7</div>
+          <div class="stat-label">task types in 3 categories</div>
+        </div>
+      </div>
+      <div class="column is-2-desktop is-4-tablet is-6-mobile">
+        <div class="stat-card">
+          <div class="stat-number">602</div>
+          <div class="stat-label">360&deg; video segments</div>
+        </div>
+      </div>
+      <div class="column is-2-desktop is-4-tablet is-6-mobile">
+        <div class="stat-card">
+          <div class="stat-number">85</div>
+          <div class="stat-label">connected streets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ============================ ENVIRONMENT ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">The Akihabara Virtual Environment</h2>
+        <div class="content has-text-justified">
+          <p>
+            360CityArena is built on a <b>Realistic Virtual World</b> of Akihabara reconstructed from 602 360&deg; video
+            segments over 85 streets. The videos are projected onto a spherical surface and organized into a navigable
+            <b>pose graph</b> in Unity, so agents traverse prerecorded 360&deg; trajectories rather than moving freely in
+            3D. The resulting graph forms a single connected component with <b>193 nodes</b> and <b>305 edges</b>, with a
+            mean branching degree of <b>3.16</b>. Geographically, it spans roughly <b>750&nbsp;m north&ndash;south and
+            650&nbsp;m east&ndash;west</b> around Akihabara Station &mdash; a dense, information-rich district with narrow
+            sidewalks, complex building layouts, and abundant electronic signage. Each street is captured in both
+            directions to reflect direction-dependent visual changes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Observation carousel -->
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="carousel results-carousel">
+          <div class="item">
+            <img src="./static/images/360CityArena_example.png" alt="First-person observation with branch choices.">
+            <div class="item-caption">Egocentric observation: at branching points the agent must choose a route.</div>
+          </div>
+          <div class="item">
+            <img src="./static/images/360CityArena_example2.png" alt="Dense, information-rich Akihabara streetscape from a first-person view.">
+            <div class="item-caption">Dense, information-rich Akihabara streetscape.</div>
+          </div>
+          <div class="item">
+            <img src="./static/images/360CityArena_example3.png" alt="Direction-dependent first-person view of a street captured in one travel direction.">
+            <div class="item-caption">Direction-dependent views captured per street.</div>
+          </div>
+          <div class="item">
+            <img src="./static/images/landmark_search_example.png" alt="Landmark search observation in front of a store.">
+            <div class="item-caption">Landmark Search: navigating toward a specified storefront.</div>
+          </div>
+          <div class="item">
+            <img src="./static/images/map_navigation_example.png" alt="Map with start and goal markers.">
+            <div class="item-caption">Map Navigation: plan a route from the start (blue) to the goal (red).</div>
+          </div>
+          <div class="item">
+            <img src="./static/images/map_localization.png" alt="Localization on a grid map.">
+            <div class="item-caption">Localization: infer the current grid cell from visual cues.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ============================ TASK CATEGORIES ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Task Categories</h2>
+        <div class="content has-text-justified">
+          <p class="has-text-centered">
+            360CityArena consists of three major categories and seven subcategories. Each subcategory contains
+            <b>25 tasks</b>, and every task is labeled <b>Easy</b>, <b>Medium</b>, or <b>Hard</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-one-third">
+        <div class="cat-card cat-env">
+          <h3 style="color:var(--arena-green-text);">① Environment Understanding</h3>
+          <p>Perception, memory, and language-grounded scene understanding &mdash; can the agent recognize where it is and what surrounds it?</p>
+          <div class="tag-list tags">
+            <span class="tag is-medium">Localization</span>
+            <span class="tag is-medium">Landmark Search (Language)</span>
+            <span class="tag is-medium">Landmark Search (Image)</span>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="cat-card cat-path">
+          <h3 style="color:var(--arena-accent-text);">② Path Reasoning</h3>
+          <p>Planning and executing routes that respect the real spatial layout of the city.</p>
+          <div class="tag-list tags">
+            <span class="tag is-medium">Map Navigation</span>
+            <span class="tag is-medium">Vision-Language Navigation</span>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="cat-card cat-spat">
+          <h3 style="color:var(--arena-purple);">③ Spatial Reasoning</h3>
+          <p>Relational understanding and quantitative perception of objects and landmarks in the scene.</p>
+          <div class="tag-list tags">
+            <span class="tag is-medium">Relational Spatial Reasoning</span>
+            <span class="tag is-medium">Object Count</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <div class="publication-image">
+          <img src="./static/images/task_category.png" alt="Examples of all seven task types across the three categories.">
+        </div>
+        <p class="figure-caption">
+          Examples of all seven task types. Each subcategory contains 25 human-crafted, verified-solvable tasks.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ============================ BIBTEX ============================ -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">BibTeX</h2>
+    <pre><code>@inproceedings{watanabe2026360cityarena,
+  title     = {360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents},
+  author    = {Watanabe, Kenta and Miyai, Atsuyuki and Takenawa, Mizuki and Aizawa, Kiyoharu and Yamasaki, Toshihiko},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            This work was supported in part by JSPS KAKENHI Grant Number 25H01164, SIP Smart Disaster Prevention,
+            and JST BOOST, Japan Grant Number JPMJBS2418.
+          </p>
+          <p>
+            This website is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+            Attribution-ShareAlike 4.0 International License</a>. The template is borrowed from
+            <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

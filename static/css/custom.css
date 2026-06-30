@@ -1,0 +1,114 @@
+/* ===== 360CityArena project page — custom overrides on top of Nerfies/Bulma ===== */
+
+:root {
+  --arena-primary: #2b6cb0;   /* deep blue */
+  --arena-accent:  #e07a3f;   /* warm orange (Path Reasoning) — decorative only */
+  --arena-green:   #4f8a5b;   /* Env. Understanding — decorative only */
+  --arena-purple:  #6b5b95;   /* Spatial Reasoning */
+  /* Darker, WCAG AA-compliant variants for heading TEXT on white */
+  --arena-accent-text: #b85a1e; /* 4.6:1 on white */
+  --arena-green-text:  #3f7049; /* 5.8:1 on white */
+}
+
+/* Never let any single element force the whole page to scroll sideways */
+html, body { overflow-x: hidden; }
+
+/* Keep figures inside their column instead of the GeoText 150% overflow */
+.publication-image img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.figure-caption {
+  font-size: 0.92rem;
+  color: #555;
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+/* Venue badge under the title */
+.publication-venue {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.15rem 0.9rem;
+  border-radius: 999px;
+  background: #edf2fb;
+  color: var(--arena-primary);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ===== Highlight stats row ===== */
+.stat-card {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 14px;
+  padding: 1.4rem 0.8rem;
+  height: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+.stat-number {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--arena-primary);
+}
+.stat-label {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 0.35rem;
+}
+
+/* ===== Category cards ===== */
+.cat-card {
+  border-radius: 14px;
+  padding: 1.4rem 1.3rem;
+  height: 100%;
+  border: 1px solid #ececec;
+  background: #fff;
+}
+.cat-card h3 {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+.cat-env  { border-top: 5px solid var(--arena-green); }
+.cat-path { border-top: 5px solid var(--arena-accent); }
+.cat-spat { border-top: 5px solid var(--arena-purple); }
+.cat-card .tag-list { margin-top: 0.7rem; }
+.cat-card .tag-list .tag { margin: 0.15rem; }
+
+/* Carousel items */
+.results-carousel .item img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+.results-carousel .item .item-caption {
+  font-size: 0.85rem;
+  color: #555;
+  padding: 0.4rem 0.6rem;
+  background: #fff;
+}
+
+hr.section-rule {
+  border: none;
+  border-top: 1px solid #eaeaea;
+  margin: 0;
+}
+
+/* ===== Responsive: keep the big title from overflowing narrow screens ===== */
+@media screen and (max-width: 480px) {
+  .publication-title.is-1 { font-size: 2.1rem; }
+  .hero .subtitle.is-3   { font-size: 1.2rem; }
+  .stat-number           { font-size: 1.9rem; }
+}
