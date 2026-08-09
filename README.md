@@ -150,11 +150,29 @@ and follow the Open Database License terms for derived map data.
 
 ## Citation
 
+### 360CityArena
+
 ```bibtex
 @inproceedings{watanabe2026360cityarena,
   title     = {360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents},
   author    = {Watanabe, Kenta and Miyai, Atsuyuki and Takenawa, Mizuki and Aizawa, Kiyoharu and Yamasaki, Toshihiko},
   booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
   year      = {2026}
+}
+```
+
+### Underlying Virtual Environment
+
+```bibtex
+@article{takenawa2026building,
+  author  = {Mizuki Takenawa and Naoki Sugimoto and Leslie W{\"o}hler
+             and Satoshi Ikehata and Kiyoharu Aizawa},
+  title   = {Building and Evaluating a Realistic Virtual World for
+             Large Scale Urban Exploration from 360° Videos},
+  journal = {Multimedia Tools and Applications},
+  volume  = {85},
+  number  = {2},
+  pages   = {149},
+  year    = {2026}
 }
 ```
