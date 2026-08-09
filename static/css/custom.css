@@ -29,14 +29,49 @@ html, body { overflow-x: hidden; }
 
 /* Venue badge under the title */
 .publication-venue {
-  display: inline-block;
-  margin-top: 0.6rem;
-  padding: 0.15rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.9rem;
   border-radius: 999px;
-  background: #edf2fb;
-  color: var(--arena-primary);
+  background: #edf7ef;
+  color: var(--arena-green-text);
+  border: 1px solid #c7dfcc;
   font-weight: 700;
   letter-spacing: 0.02em;
+}
+
+.publication-venue .fa-circle-check {
+  font-size: 0.95em;
+}
+
+/* ===== Teaser ===== */
+.project-teaser-section .hero-body {
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+}
+
+.arena-teaser {
+  margin: 0;
+}
+
+.arena-teaser-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #eef0f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
+}
+
+.teaser-caption {
+  max-width: 70ch;
+  margin: 0.7rem auto 0;
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  text-align: center;
 }
 
 /* ===== Highlight stats row ===== */
@@ -111,4 +146,5 @@ hr.section-rule {
   .publication-title.is-1 { font-size: 2.1rem; }
   .hero .subtitle.is-3   { font-size: 1.2rem; }
   .stat-number           { font-size: 1.9rem; }
+  .arena-teaser-image    { border-radius: 8px; }
 }

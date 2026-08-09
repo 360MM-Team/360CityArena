@@ -1,6 +1,8 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
 $(document).ready(function() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // Check for click events on the navbar burger icon
     $(".navbar-burger").click(function() {
       // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
@@ -13,7 +15,7 @@ $(document).ready(function() {
         slidesToShow: 3,
         loop: true,
         infinite: true,
-        autoplay: true,
+        autoplay: !prefersReducedMotion,
         autoplaySpeed: 4000,
     }
 
