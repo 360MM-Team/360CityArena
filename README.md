@@ -1,4 +1,24 @@
-# 360CityArena
+# 360CityArena: A Realistic Virtual Urban Navigation Benchmark for Embodied Agents [ECCV 2026]
+
+<p align="center">
+  <strong>Kenta Watanabe</strong>&emsp;
+  <a href="https://atsumiyai.github.io/"><strong>Atsuyuki Miyai</strong></a>&emsp;
+  <strong>Mizuki Takenawa</strong>&emsp;
+  <a href="https://scholar.google.co.jp/citations?user=CJRhhi0AAAAJ&amp;hl=en"><strong>Kiyoharu Aizawa</strong></a>&emsp;
+  <a href="https://scholar.google.com/citations?user=rE9iY5MAAAAJ&amp;hl=en"><strong>Toshihiko Yamasaki</strong></a>
+</p>
+
+<p align="center"><em>The University of Tokyo</em></p>
+
+<p align="center">
+  <a href="https://360mm-team.github.io/360CityArena/"><strong>🌐 Project Page</strong></a>
+</p>
+
+<p align="center">
+  <img src="docs/images/360_city_arena_teaser.png"
+       alt="360CityArena teaser showing a panoramic Akihabara scene and an embodied navigation agent"
+       width="100%">
+</p>
 
 360CityArena is a Unity-based embodied navigation and visual reasoning benchmark for multimodal large language models. It couples a 360-degree city-view Unity environment with a Python runner that sends camera and map observations to MLLM APIs, executes task sequences, and records reproducible result summaries.
 
