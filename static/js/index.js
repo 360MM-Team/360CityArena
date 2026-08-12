@@ -2,6 +2,12 @@ window.HELP_IMPROVE_VIDEOJS = false;
 
 $(document).ready(function() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const environmentVideo = document.querySelector('.environment-video video');
+
+    if (prefersReducedMotion && environmentVideo) {
+      environmentVideo.removeAttribute('autoplay');
+      environmentVideo.pause();
+    }
 
     // Check for click events on the navbar burger icon
     $(".navbar-burger").click(function() {
