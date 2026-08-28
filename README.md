@@ -11,7 +11,8 @@
 <p align="center"><em>The University of Tokyo</em></p>
 
 <p align="center">
-  <a href="https://360mm-team.github.io/360CityArena/"><strong>🌐 Project Page</strong></a>
+  <a href="https://360mm-team.github.io/360CityArena/"><strong>🌐 Project Page</strong></a>&emsp;
+  <a href="https://huggingface.co/datasets/hal-utokyo/360CityArena"><strong>🤗 Dataset</strong></a>
 </p>
 
 <p align="center">
@@ -23,6 +24,10 @@
 360CityArena is a Unity-based embodied navigation and visual reasoning benchmark for multimodal large language models. It couples a 360-degree city-view Unity environment with a Python runner that sends camera and map observations to MLLM APIs, executes task sequences, and records reproducible result summaries.
 
 This repository does not include previous experiment results. New runs write public summaries under `outputs/<run_id>/`.
+
+## News
+
+- **August 11, 2026:** Corrected task 7006 after finding that it duplicated task 7009.
 
 ## Benchmark Contents
 
