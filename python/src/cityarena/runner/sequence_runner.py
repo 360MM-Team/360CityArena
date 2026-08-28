@@ -3,7 +3,7 @@
 """
 Run multiple 360CityArena tasks sequentially using the JSON-lines agent server.
 
-Tasks are loaded from the public CSV catalog under ``benchmark/tasks``. You can
+Tasks are loaded from the pinned Hugging Face Dataset release. You can
 select specific task IDs, whole task categories (TaskType), or execute the entire
 catalog.
 """
@@ -26,14 +26,18 @@ from typing import Iterable, List
 from pathlib import Path
 
 from cityarena.paths import (
-    BENCHMARK_ROOT,
     DEFAULT_OUTPUT_ROOT,
     PACKAGE_ROOT,
     REPO_ROOT,
     UNITY_ROOT,
 )
 from cityarena.runner.agent_server import AgentServer, configure_benchmark_logging
-from cityarena.tasks.catalog import get_task_by_id, get_tasks_by_type, iter_all_tasks
+from cityarena.tasks.catalog import (
+    get_dataset_source,
+    get_task_by_id,
+    get_tasks_by_type,
+    iter_all_tasks,
+)
 from cityarena.tasks.types import Task, TaskType
 from cityarena.runner.unity_controller import UnityController
 
@@ -65,7 +69,7 @@ def _hash_files(paths: Iterable[Path]) -> str:
 
 
 def _task_catalog_hash() -> str:
-    return _hash_files(BENCHMARK_ROOT.joinpath("tasks").glob("*.csv"))
+    return get_dataset_source().revision
 
 
 def _prompt_hash() -> str:
@@ -125,6 +129,7 @@ def _write_run_metadata(
     started_at: datetime,
     ended_at: datetime | None = None,
 ) -> None:
+    dataset_source = get_dataset_source()
     payload = {
         "benchmark_name": "360CityArena",
         "result_schema_version": 3,
@@ -139,6 +144,10 @@ def _write_run_metadata(
         "validation_provider": args.validation_provider or "",
         "validation_pretrained": args.validation_pretrained or "",
         "task_catalog_hash": _task_catalog_hash(),
+        "dataset_repo": dataset_source.repo_id,
+        "dataset_config": dataset_source.config,
+        "dataset_split": dataset_source.split,
+        "dataset_revision": dataset_source.revision,
         "prompt_hash": _prompt_hash(),
         "python_lock_hash": _file_hash(REPO_ROOT / "python" / "uv.lock"),
         "unity_version": _unity_version(),
@@ -423,7 +432,7 @@ def _select_tasks(
     for task_id in task_ids:
         task = get_task_by_id(task_id)
         if task is None:
-            raise ValueError(f"Task id {task_id} not found in CSV catalog.")
+            raise ValueError(f"Task id {task_id} not found in the dataset catalog.")
         if task.id not in seen:
             selected.append(task)
             seen.add(task.id)
@@ -762,7 +771,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--all",
         action="store_true",
-        help="Run every task defined in the CSV catalog.",
+        help="Run every task defined in the pinned Hugging Face dataset.",
     )
     parser.add_argument(
         "--restart-delay",

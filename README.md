@@ -27,27 +27,21 @@ This repository does not include previous experiment results. New runs write pub
 ## Benchmark Contents
 
 The public benchmark release contains 175 tasks: 25 tasks in each of seven
-families. Each task is defined by a CSV row under `benchmark/tasks/` and, when
-needed, a task reference image under `benchmark/assets/`.
-
-- `localization.csv`: infer the initial grid cell from exploration and a grid map.
-- `landmark_search_language.csv`: navigate to a named landmark.
-- `landmark_search_image.csv`: navigate to a landmark shown in a reference image.
-- `counting.csv`: count specified objects within a constrained area.
-- `map_navigation.csv`: navigate from a start marker to a goal marker on a map.
-- `language_guided_navigation.csv`: follow natural-language directions.
-- `relational_spatial_reasoning.csv`: identify a nearby landmark from a spatial relation.
+families. Task definitions are maintained in the
+[360CityArena Hugging Face Dataset](https://huggingface.co/datasets/hal-utokyo/360CityArena).
+The runner loads a pinned Hub revision recorded in
+`benchmark/manifests/task_manifest.json`; task reference images used at runtime
+remain under `benchmark/assets/`.
 
 Release inventories are recorded in `benchmark/manifests/`. See
-`docs/task_taxonomy.md` for task definitions and `benchmark/tasks/README.md` for
+`docs/task_taxonomy.md` for task definitions and the Hugging Face Dataset for
 the public task catalog.
 
 ## Repository Layout
 
-- `benchmark/`: public benchmark data.
-- `benchmark/tasks/`: CSV task definitions.
+- `benchmark/`: task reference assets and release manifests.
 - `benchmark/assets/`: reference images used by benchmark tasks.
-- `benchmark/manifests/`: release manifests for task and asset inventory.
+- `benchmark/manifests/`: pinned Hub source and asset inventory.
 - `unity/`: Unity project and environment.
 - `python/`: Python package, runner, and model clients.
 - `scripts/`: convenience run scripts.

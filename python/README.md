@@ -13,7 +13,7 @@ The project uses `uv` and `pyproject.toml`. Do not commit local virtual environm
 
 ## Package Layout
 
-- `src/cityarena/tasks/catalog.py`: task dataclasses, CSV loading, answer validation.
+- `src/cityarena/tasks/catalog.py`: pinned Hugging Face task catalog and answer validation.
 - `src/cityarena/runner/`: agent server, sequence runner, Unity controller.
 - `src/cityarena/models/llm_client.py`: provider clients and OpenAI-compatible adapter.
 - `src/cityarena/prompts/system.py`: system and reflection prompts.
@@ -21,7 +21,11 @@ The project uses `uv` and `pyproject.toml`. Do not commit local virtual environm
 
 ## Task Catalog
 
-Tasks are loaded from `../benchmark/tasks/*.csv`. Referenced images live under `../benchmark/assets/`.
+Tasks are loaded from the pinned `hal-utokyo/360CityArena` Hugging Face Dataset
+revision recorded in `../benchmark/manifests/task_manifest.json`. While the
+dataset is private, authenticate once with `hf auth login`. Hugging Face caches
+the downloaded revision for subsequent runs. Referenced runtime images live
+under `../benchmark/assets/`.
 
 Useful checks:
 

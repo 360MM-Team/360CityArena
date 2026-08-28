@@ -118,7 +118,7 @@ if [[ -n "${PROVIDER:-}" ]]; then
   echo "[run_task_sequence] Provider: ${PROVIDER}"
 fi
 
-PYTHONPATH="${SCRIPT_DIR}/src${PYTHONPATH:+:${PYTHONPATH}}" uv run python -m cityarena run \
+PYTHONPATH="${SCRIPT_DIR}/src${PYTHONPATH:+:${PYTHONPATH}}" uv run --project "${SCRIPT_DIR}" python -m cityarena run \
   --manage-unity \
   --unity-url "${UNITY_URL}" \
   --unity-path "${UNITY_EDITOR_PATH}" \

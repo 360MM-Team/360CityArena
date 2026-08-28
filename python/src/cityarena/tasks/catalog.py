@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from cityarena.tasks.loaders import load_tasks_from_csv
+from cityarena.tasks.loaders import get_dataset_source, load_tasks_from_hub
 from cityarena.tasks.prompt_templates import LOCALIZATION_STEP_LIMIT
 from cityarena.tasks.types import Task, TaskType
 
@@ -14,11 +14,12 @@ __all__ = [
     "get_task_by_id",
     "get_tasks_by_type",
     "iter_all_tasks",
-    "load_tasks_from_csv",
+    "get_dataset_source",
+    "load_tasks_from_hub",
 ]
 
 
-TASKS: tuple[Task, ...] = load_tasks_from_csv()
+TASKS: tuple[Task, ...] = load_tasks_from_hub()
 _TASK_INDEX: dict[int, Task] = {task.id: task for task in TASKS}
 
 

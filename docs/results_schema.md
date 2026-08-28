@@ -18,7 +18,11 @@ Runtime outputs are written under `outputs/<run_id>/`.
 | `validation_model` | LLM judge model, if LLM-based validation is used. |
 | `validation_provider` | Provider for the LLM judge model, if used. |
 | `validation_pretrained` | Provider-specific judge deployment/pretrained identifier, if any. |
-| `task_catalog_hash` | SHA-256 hash over public task CSV files. |
+| `task_catalog_hash` | Pinned Hugging Face Dataset revision. |
+| `dataset_repo` | Hugging Face Dataset repository ID. |
+| `dataset_config` | Hugging Face Dataset configuration name. |
+| `dataset_split` | Hugging Face Dataset split used by the run. |
+| `dataset_revision` | Pinned Hub commit used by the run. |
 | `prompt_hash` | SHA-256 hash over prompt and validation template files. |
 | `python_lock_hash` | SHA-256 hash of `python/uv.lock`, when available. |
 | `unity_version` | Unity editor version recorded in `ProjectVersion.txt`, when available. |

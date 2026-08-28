@@ -1,11 +1,16 @@
 # Benchmark Data
 
-This directory contains the public 360CityArena task data and task reference assets.
+This directory contains 360CityArena task reference assets and release manifests.
 
-- `tasks/`: CSV task definitions. Each file represents one public task family.
 - `assets/localization/`: localization reference map.
 - `assets/landmark_images/`: landmark-search image references.
 - `assets/navigation_maps/`: map-navigation references.
-- `manifests/`: release inventory metadata.
+- `manifests/`: the pinned Hugging Face Dataset source and asset inventory.
 
-Task loaders fail closed: missing CSVs, invalid rows, duplicate task IDs, and missing required fields raise explicit errors instead of silently dropping tasks.
+Task definitions are maintained only in
+[`hal-utokyo/360CityArena`](https://huggingface.co/datasets/hal-utokyo/360CityArena).
+The runner loads the exact revision recorded in `manifests/task_manifest.json`
+and fails closed on invalid rows, duplicate IDs, or an unexpected inventory.
+
+Maintainers can validate and release the Hugging Face Dataset by
+following `docs/huggingface_release.md`.

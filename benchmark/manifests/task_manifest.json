@@ -2,13 +2,19 @@
   "benchmark_name": "360CityArena",
   "version": "0.1.0",
   "task_count": 175,
+  "source": {
+    "repo_id": "hal-utokyo/360CityArena",
+    "config": "default",
+    "split": "test",
+    "revision": "7437162201e79781a6553c5e201b310520d09463"
+  },
   "families": [
-    {"name": "Localization", "csv": "benchmark/tasks/localization.csv", "count": 25},
-    {"name": "LandmarkSearchWithLanguage", "csv": "benchmark/tasks/landmark_search_language.csv", "count": 25},
-    {"name": "LandmarkSearchWithImage", "csv": "benchmark/tasks/landmark_search_image.csv", "count": 25},
-    {"name": "Counting", "csv": "benchmark/tasks/counting.csv", "count": 25},
-    {"name": "MapNavigation", "csv": "benchmark/tasks/map_navigation.csv", "count": 25},
-    {"name": "LanguageGuidedNavigation", "csv": "benchmark/tasks/language_guided_navigation.csv", "count": 25},
-    {"name": "RelationalSpatialReasoning", "csv": "benchmark/tasks/relational_spatial_reasoning.csv", "count": 25}
+    {"name": "Localization", "count": 25},
+    {"name": "LandmarkSearchWithLanguage", "count": 25},
+    {"name": "LandmarkSearchWithImage", "count": 25},
+    {"name": "Counting", "count": 25},
+    {"name": "MapNavigation", "count": 25},
+    {"name": "LanguageGuidedNavigation", "count": 25},
+    {"name": "RelationalSpatialReasoning", "count": 25}
   ]
 }

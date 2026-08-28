@@ -1,356 +1,199 @@
 from __future__ import annotations
 
-import csv
-import logging
+import json
+import os
+from collections import Counter
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import Any
 
 from cityarena.paths import BENCHMARK_ROOT, resolve_repo_path
-from cityarena.tasks.prompt_templates import (
-    COUNTING_PROMPT,
-    LANDMARK_SEARCH_WITH_IMAGE_PROMPT,
-    LANDMARK_SEARCH_WITH_LANGUAGE_PROMPT,
-    LANGUAGE_GUIDED_NAVIGATION_PROMPT,
-    LOCALIZATION_IMAGES,
-    LOCALIZATION_PROMPT,
-    MAP_NAVIGATION_PROMPT,
-    RELATIONAL_SPATIAL_REASONING_PROMPT,
-)
 from cityarena.tasks.types import Task, TaskType
 
-logger = logging.getLogger(__name__)
-_TASKS_DIR = BENCHMARK_ROOT / "tasks"
-TaskBuilder = Callable[[dict[str, Any], Path, int], Optional[Task]]
+
+_MANIFEST_PATH = BENCHMARK_ROOT / "manifests" / "task_manifest.json"
+_EXPECTED_TASKS = 175
+_EXPECTED_TASKS_PER_FAMILY = 25
 
 
-def _clean_value(value: Any) -> Optional[str]:
-    if value is None:
-        return None
-    if isinstance(value, str):
-        value = value.strip()
-        if not value:
-            return None
-        return value
-    return str(value)
+@dataclass(frozen=True)
+class DatasetSource:
+    repo_id: str
+    config: str
+    split: str
+    revision: str
 
 
-def _optional_field(row: dict[str, Any], key: str) -> Optional[str]:
-    return _clean_value(row.get(key))
-
-
-def _require_field(row: dict[str, Any], key: str, path: Path, row_number: int) -> str:
-    value = _optional_field(row, key)
-    if value is None:
-        raise ValueError(f"{path.name} row {row_number}: missing value for '{key}'")
+def _required_value(row: dict[str, Any], key: str, row_number: int) -> Any:
+    value = row.get(key)
+    if value is None or (isinstance(value, str) and not value.strip()):
+        raise ValueError(f"Hugging Face dataset row {row_number}: missing '{key}'")
     return value
 
 
-def _require_int(row: dict[str, Any], key: str, path: Path, row_number: int) -> int:
-    raw_value = _require_field(row, key, path, row_number)
+@lru_cache(maxsize=1)
+def get_dataset_source() -> DatasetSource:
     try:
-        return int(raw_value)
-    except ValueError as exc:
-        raise ValueError(
-            f"{path.name} row {row_number}: field '{key}' expects an integer, got {raw_value!r}"
-        ) from exc
+        manifest = json.loads(_MANIFEST_PATH.read_text(encoding="utf-8"))
+        source = manifest["source"]
+    except (OSError, KeyError, TypeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Invalid dataset manifest: {_MANIFEST_PATH}") from exc
+
+    return DatasetSource(
+        repo_id=os.getenv("CITYARENA_DATASET_REPO", source["repo_id"]),
+        config=os.getenv("CITYARENA_DATASET_CONFIG", source["config"]),
+        split=os.getenv("CITYARENA_DATASET_SPLIT", source["split"]),
+        revision=os.getenv("CITYARENA_DATASET_REVISION", source["revision"]),
+    )
 
 
-def _format_number(value: Any) -> str:
-    cleaned = _clean_value(value)
-    if cleaned is None:
-        return ""
-    try:
-        num = float(cleaned)
-    except ValueError:
-        return cleaned
-    if abs(num - round(num)) < 1e-6:
-        return str(int(round(num)))
-    return f"{num:.2f}".rstrip("0").rstrip(".")
-
-
-def _format_xy(x: Any, y: Any) -> str:
-    return f"x:{_format_number(x)} y:{_format_number(y)}"
-
-
-def _build_metadata(
-    row: dict[str, Any],
-    path: Path,
-    row_number: int,
-    extra: Optional[dict[str, Any]] = None,
+def _metadata_from_row(
+    row: dict[str, Any], row_number: int, source: DatasetSource
 ) -> dict[str, Any]:
-    metadata: dict[str, Any] = {}
-    for key, value in row.items():
-        cleaned = _clean_value(value)
-        if cleaned is not None:
-            metadata[key] = cleaned
-    metadata["csv"] = path.name
-    metadata["row"] = row_number
-    if extra:
-        metadata.update(extra)
+    raw_source_record = row.get("source_record")
+    if raw_source_record:
+        try:
+            metadata = json.loads(raw_source_record)
+        except (TypeError, json.JSONDecodeError) as exc:
+            raise ValueError(
+                f"Hugging Face dataset row {row_number}: invalid source_record"
+            ) from exc
+    else:
+        metadata = {}
+
+    normalized_fields = {
+        "task_id": row.get("task_id"),
+        "initial_index": row.get("initial_index"),
+        "difficulty": row.get("difficulty"),
+        "reference_image_path": row.get("reference_image_path"),
+        "source_file": row.get("source_file"),
+        "source_row": row.get("source_row"),
+        "landmark": row.get("goal_landmark"),
+        "directions": row.get("directions"),
+        "relation": row.get("relation"),
+        "object": row.get("counting_object"),
+        "range": row.get("counting_range"),
+        "gt_x": row.get("goal_x"),
+        "gt_y": row.get("goal_y"),
+        "gt_grid_x": row.get("goal_grid_x"),
+        "gt_grid_y": row.get("goal_grid_y"),
+        "photo_id": row.get("photo_id"),
+        "map_id": row.get("map_id"),
+    }
+    metadata.update(
+        {key: value for key, value in normalized_fields.items() if value is not None}
+    )
+    metadata.update(
+        {
+            "dataset_repo": source.repo_id,
+            "dataset_config": source.config,
+            "dataset_split": source.split,
+            "dataset_revision": source.revision,
+            "dataset_row": row_number,
+        }
+    )
     return metadata
 
 
-def _resolve_image_path(relative: Optional[str]) -> Optional[str]:
-    rel = _clean_value(relative)
-    if rel is None:
-        return None
-    abs_path = resolve_repo_path(rel)
-    if not abs_path.exists():
-        logger.warning("Task image not found: %s", abs_path)
-    return rel
+def _reference_images(row: dict[str, Any], row_number: int) -> list[str]:
+    relative_path = row.get("reference_image_path")
+    if not relative_path:
+        return []
+    path = Path(str(relative_path))
+    if path.is_absolute() or ".." in path.parts:
+        raise ValueError(
+            f"Hugging Face dataset row {row_number}: unsafe reference image path"
+        )
+    resolved = resolve_repo_path(path)
+    if not resolved.is_file():
+        raise FileNotFoundError(
+            f"Task reference image is not available in the runner checkout: {resolved}"
+        )
+    return [str(path)]
 
 
-def _load_csv_tasks(file_name: str, builder: TaskBuilder) -> list[Task]:
-    path = _TASKS_DIR / file_name
-    tasks: list[Task] = []
-    if not path.exists():
-        raise FileNotFoundError(f"Task CSV not found: {path}")
-    with open(path, newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row_number, raw_row in enumerate(reader, start=2):
-            row: dict[str, Any] = {
-                key: _clean_value(value) for key, value in (raw_row or {}).items()
-            }
-            if not any(value is not None for value in row.values()):
-                continue
-            task = builder(row, path, row_number)
-            if task:
-                tasks.append(task)
-    return tasks
+def _task_from_row(
+    row: dict[str, Any], row_number: int, source: DatasetSource
+) -> Task:
+    task_type_value = str(_required_value(row, "task_type", row_number))
+    try:
+        task_type = TaskType(task_type_value)
+    except ValueError as exc:
+        raise ValueError(
+            f"Hugging Face dataset row {row_number}: unknown task_type "
+            f"{task_type_value!r}"
+        ) from exc
+
+    return Task(
+        id=int(_required_value(row, "task_id", row_number)),
+        prompt=str(_required_value(row, "prompt", row_number)),
+        task_type=task_type,
+        requires_current_location=bool(row.get("requires_current_location")),
+        additional_task_images=_reference_images(row, row_number),
+        start_index=int(_required_value(row, "initial_index", row_number)),
+        answer=str(_required_value(row, "answer", row_number)),
+        difficulty=(str(row["difficulty"]) if row.get("difficulty") else None),
+        metadata=_metadata_from_row(row, row_number, source),
+    )
 
 
-def _load_localization_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        answer = _format_xy(row.get("gt_grid_x"), row.get("gt_grid_y"))
-        difficulty = _optional_field(row, "difficulty")
-        metadata = _build_metadata(row, path, row_number)
-        return Task(
-            id=task_id,
-            prompt=LOCALIZATION_PROMPT,
-            task_type=TaskType.Localization,
-            requires_current_location=False,
-            additional_task_images=list(LOCALIZATION_IMAGES),
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
+def _validate_inventory(tasks: list[Task]) -> None:
+    if len(tasks) != _EXPECTED_TASKS:
+        raise ValueError(
+            f"Expected {_EXPECTED_TASKS} Hugging Face tasks, found {len(tasks)}"
         )
 
-    return _load_csv_tasks("localization.csv", builder)
+    task_ids = [task.id for task in tasks]
+    duplicates = sorted(
+        task_id for task_id, count in Counter(task_ids).items() if count > 1
+    )
+    if duplicates:
+        raise ValueError(f"Duplicate task IDs in Hugging Face dataset: {duplicates}")
 
-
-def _load_landmark_language_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        landmark = _require_field(row, "landmark", path, row_number)
-        answer = _format_xy(row.get("gt_x"), row.get("gt_y"))
-        difficulty = _optional_field(row, "difficulty")
-        metadata = _build_metadata(row, path, row_number, {"landmark": landmark})
-        return Task(
-            id=task_id,
-            prompt=LANDMARK_SEARCH_WITH_LANGUAGE_PROMPT.format(LandmarkName=landmark),
-            task_type=TaskType.LandmarkSearchWithLanguage,
-            requires_current_location=True,
-            additional_task_images=[],
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
-        )
-
-    return _load_csv_tasks("landmark_search_language.csv", builder)
-
-
-def _load_landmark_image_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        landmark = _require_field(row, "landmark_name", path, row_number)
-        photo_id = _require_field(row, "photo_id", path, row_number)
-        answer = _format_xy(row.get("gt_x"), row.get("gt_y"))
-        difficulty = _optional_field(row, "difficulty")
-        image_rel = _resolve_image_path(f"benchmark/assets/landmark_images/{photo_id}.png")
-        metadata = _build_metadata(
-            row,
-            path,
-            row_number,
-            {
-                "landmark_name": landmark,
-                "photo_id": photo_id,
-            },
-        )
-        return Task(
-            id=task_id,
-            prompt=LANDMARK_SEARCH_WITH_IMAGE_PROMPT,
-            task_type=TaskType.LandmarkSearchWithImage,
-            requires_current_location=True,
-            additional_task_images=[image_rel] if image_rel else [],
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
-        )
-
-    return _load_csv_tasks("landmark_search_image.csv", builder)
-
-
-def _load_language_guided_navigation_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        directions = _require_field(row, "directions", path, row_number)
-        answer = _format_xy(row.get("gt_x"), row.get("gt_y"))
-        difficulty = _optional_field(row, "difficulty")
-        metadata = _build_metadata(row, path, row_number)
-        return Task(
-            id=task_id,
-            prompt=LANGUAGE_GUIDED_NAVIGATION_PROMPT.format(Directions=directions),
-            task_type=TaskType.LanguageGuidedNavigation,
-            requires_current_location=True,
-            additional_task_images=[],
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
-        )
-
-    return _load_csv_tasks("language_guided_navigation.csv", builder)
-
-
-def _load_relational_spatial_reasoning_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        landmark = _require_field(row, "landmark_name", path, row_number)
-        relation = _require_field(row, "relation", path, row_number)
-        answer = _require_field(row, "gt", path, row_number)
-        difficulty = _optional_field(row, "difficulty")
-        metadata = _build_metadata(
-            row,
-            path,
-            row_number,
-            {
-                "landmark_name": landmark,
-                "relation": relation,
-            },
-        )
-        return Task(
-            id=task_id,
-            prompt=RELATIONAL_SPATIAL_REASONING_PROMPT.format(
-                LandmarkName=landmark,
-                Relation=relation,
-            ),
-            task_type=TaskType.RelationalSpatialReasoning,
-            requires_current_location=True,
-            additional_task_images=[],
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
-        )
-
-    return _load_csv_tasks("relational_spatial_reasoning.csv", builder)
-
-
-def _load_map_navigation_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        answer = _format_xy(row.get("gt_x"), row.get("gt_y"))
-        map_id = _optional_field(row, "map_id")
-        image_rel = (
-            _resolve_image_path(f"benchmark/assets/navigation_maps/{map_id}.png")
-            if map_id
-            else None
-        )
-        difficulty = _optional_field(row, "dificulty") or _optional_field(
-            row, "difficulty"
-        )
-        metadata = _build_metadata(
-            row,
-            path,
-            row_number,
-            {"map_id": map_id} if map_id else None,
-        )
-        if difficulty:
-            metadata["difficulty"] = difficulty
-        return Task(
-            id=task_id,
-            prompt=MAP_NAVIGATION_PROMPT,
-            task_type=TaskType.MapNavigation,
-            requires_current_location=True,
-            additional_task_images=[image_rel] if image_rel else [],
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
-        )
-
-    return _load_csv_tasks("map_navigation.csv", builder)
-
-
-def _load_counting_tasks() -> list[Task]:
-    def builder(row: dict[str, Any], path: Path, row_number: int) -> Task:
-        task_id = _require_int(row, "task_id", path, row_number)
-        start_index = _require_int(row, "initial_index", path, row_number)
-        range_text = _require_field(row, "range", path, row_number)
-        object_text = _require_field(row, "object", path, row_number)
-        answer = _require_field(row, "gt", path, row_number)
-        difficulty = _optional_field(row, "difficulty")
-        metadata = _build_metadata(
-            row,
-            path,
-            row_number,
-            {
-                "range": range_text,
-                "object": object_text,
-            },
-        )
-        return Task(
-            id=task_id,
-            prompt=COUNTING_PROMPT.format(Object=object_text, Range=range_text),
-            task_type=TaskType.Counting,
-            requires_current_location=True,
-            additional_task_images=[],
-            start_index=start_index,
-            answer=answer,
-            difficulty=difficulty,
-            metadata=metadata,
-        )
-
-    return _load_csv_tasks("counting.csv", builder)
-
-
-def _deduplicate_tasks(tasks: list[Task]) -> list[Task]:
-    unique: list[Task] = []
-    seen: set[int] = set()
-    for task in tasks:
-        if task.id in seen:
-            raise ValueError(f"Duplicate task_id {task.id} encountered in CSV catalog.")
-        unique.append(task)
-        seen.add(task.id)
-    return unique
-
-
-def _load_all_tasks_from_csv() -> list[Task]:
-    tasks: list[Task] = []
-    tasks.extend(_load_localization_tasks())
-    tasks.extend(_load_landmark_language_tasks())
-    tasks.extend(_load_landmark_image_tasks())
-    tasks.extend(_load_language_guided_navigation_tasks())
-    tasks.extend(_load_relational_spatial_reasoning_tasks())
-    tasks.extend(_load_map_navigation_tasks())
-    tasks.extend(_load_counting_tasks())
-    return tasks
+    family_counts = Counter(task.task_type for task in tasks)
+    if len(family_counts) != 7 or any(
+        count != _EXPECTED_TASKS_PER_FAMILY for count in family_counts.values()
+    ):
+        readable_counts = {
+            task_type.value: count for task_type, count in family_counts.items()
+        }
+        raise ValueError(f"Unexpected task-family inventory: {readable_counts}")
 
 
 @lru_cache(maxsize=1)
-def load_tasks_from_csv() -> tuple[Task, ...]:
-    tasks = _deduplicate_tasks(_load_all_tasks_from_csv())
-    if not tasks:
-        raise ValueError(f"No tasks loaded from CSV files under {_TASKS_DIR}")
-    return tuple(tasks)
+def load_tasks_from_hub() -> tuple[Task, ...]:
+    try:
+        from datasets import load_dataset
+    except ImportError as exc:
+        raise RuntimeError(
+            "The `datasets` package is required to load the 360CityArena task catalog."
+        ) from exc
+
+    source = get_dataset_source()
+    try:
+        dataset = load_dataset(
+            source.repo_id,
+            source.config,
+            split=source.split,
+            revision=source.revision,
+        )
+    except Exception as exc:
+        raise RuntimeError(
+            "Unable to load the pinned 360CityArena dataset from Hugging Face. "
+            "Authenticate with `hf auth login` while the repository is private, "
+            "or make sure the pinned revision is available in the local HF cache. "
+            f"Source: {source.repo_id}/{source.config}@{source.revision}"
+        ) from exc
+
+    # Reference images are supplied by the runner checkout. Removing the embedded
+    # image column avoids decoding all 75 images while constructing the catalog.
+    if "reference_image" in dataset.column_names:
+        dataset = dataset.remove_columns("reference_image")
+
+    tasks = [
+        _task_from_row(dict(row), row_number, source)
+        for row_number, row in enumerate(dataset, start=1)
+    ]
+    _validate_inventory(tasks)
+    return tuple(sorted(tasks, key=lambda task: task.id))
