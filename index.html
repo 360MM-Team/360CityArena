@@ -112,15 +112,15 @@
           <p>
             We present <b>360CityArena</b>, a benchmark for evaluating the urban exploration capabilities of Embodied
             Agents within a photorealistic environment constructed from 360&deg; videos. Existing outdoor benchmarks
-            either lack sufficient photorealism and complexity, resulting in a considerable gap from real-world urban
+            lack sufficient photorealism or complexity, resulting in a considerable gap from real-world urban
             environments. 360CityArena is built on a realistic reconstruction of the Akihabara district in Tokyo, Japan,
             using <b>602 360&deg; video segments covering 85 streets</b>, and consists of <b>175 meticulously human-crafted
             tasks</b>. It encompasses three task categories &mdash; Environment Understanding, Path Reasoning, and Spatial
             Reasoning &mdash; covering fundamental abilities required for urban exploration, such as localization, landmark
             search, path planning, and relational spatial reasoning, thereby enabling comprehensive evaluation in realistic
-            urban scenes. Our evaluation using state-of-the-art LMM-based agents shows that even the strongest model,
-            Gemini 2.5 Flash, performs far below human level
-            (<b>human: 77.3%</b> vs. <b>Gemini 2.5 Flash: 17.1%</b>), revealing substantial challenges that remain in
+            urban scenes. Our evaluation of <b>14 LMM-based agents</b> shows that the strongest evaluated model,
+            GPT-6 Astra, achieves a mean score of <b>43.8%</b>, compared with <b>77.3%</b> for a human baseline of
+            five participants familiar with Akihabara. This gap reveals substantial challenges that remain in
             city-scale embodied navigation and reasoning. 360CityArena provides a necessary and challenging testbed for
             photorealistic urban-district navigation and spatial reasoning.
           </p>
@@ -321,112 +321,175 @@
         <h2 class="title is-3">Results</h2>
         <div class="content results-intro">
           <p>
-            As shown in Table 2, human participants achieved higher accuracy than current LMMs. All LMMs still fall far
-            short of human performance.
+            We compare <b>six closed and eight open models</b> across all 175 tasks. GPT-6 Astra achieves the highest
+            model mean score, while participants familiar with Akihabara outperform every model on all seven task types.
           </p>
         </div>
       </div>
     </div>
 
-    <div class="results-summary" role="img" aria-label="Mean score comparison: human baseline 77.3 percent versus Gemini 2.5 Flash 17.1 percent">
+    <div class="results-summary" role="img" aria-label="Mean score comparison: local experts 77.3 percent versus GPT-6 Astra 43.8 percent, a gap of 33.5 percentage points">
       <div class="comparison-score comparison-score-human">
-        <p class="comparison-label">Human</p>
+        <p class="comparison-label">Local experts</p>
         <p class="comparison-number">77.3<span>%</span></p>
       </div>
       <div class="comparison-vs" aria-hidden="true">vs.</div>
       <div class="comparison-score comparison-score-model">
-        <p class="comparison-label">Gemini 2.5 Flash</p>
-        <p class="comparison-number">17.1<span>%</span></p>
+        <p class="comparison-label">GPT-6 Astra</p>
+        <p class="comparison-number">43.8<span>%</span></p>
       </div>
       <p class="comparison-note">
-        Our evaluation using state-of-the-art LMM-based agents shows that even the strongest model, Gemini 2.5 Flash,
-        performs far below human level.
+        The strongest evaluated model trails the human baseline by <b>33.5 percentage points</b>.
+        The human baseline comprises five participants familiar with Akihabara.
       </p>
     </div>
 
-    <p class="results-scroll-hint" aria-hidden="true">
-      <i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i>
-      Swipe horizontally to compare all tasks
-    </p>
+    <div class="results-table-tools">
+      <a href="./static/data/benchmark-results.csv" download>Download results (CSV)</a>
+      <p class="results-scroll-hint" aria-hidden="true">
+        <i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i>
+        Scroll horizontally to compare all tasks
+      </p>
+    </div>
     <div class="results-table-wrap" role="region" aria-label="Overall benchmark results" tabindex="0">
-      <table class="table is-fullwidth results-table">
+      <table class="table is-fullwidth results-table" aria-describedby="results-caption">
         <thead>
           <tr>
             <th rowspan="2" scope="col">Agent</th>
             <th colspan="3" scope="colgroup">Environment Understanding</th>
             <th colspan="2" scope="colgroup">Path Reasoning</th>
             <th colspan="2" scope="colgroup">Spatial Reasoning</th>
-            <th rowspan="2" scope="col">Average</th>
+            <th rowspan="2" scope="col">Mean</th>
           </tr>
           <tr>
-            <th scope="col">Loc.</th>
+            <th scope="col"><abbr title="Localization">Loc.</abbr></th>
             <th scope="col">Landmark<br>(Lang.)</th>
             <th scope="col">Landmark<br>(Img.)</th>
-            <th scope="col">Map Nav.</th>
-            <th scope="col">VLN</th>
-            <th scope="col">Obj. Count</th>
-            <th scope="col">Rel.<br>Reason.</th>
+            <th scope="col"><abbr title="Map Navigation">Map Nav.</abbr></th>
+            <th scope="col"><abbr title="Vision-Language Navigation">VLN</abbr></th>
+            <th scope="col"><abbr title="Object Count">Obj. Count</abbr></th>
+            <th scope="col"><abbr title="Relational Spatial Reasoning">Rel.<br>Reason.</abbr></th>
           </tr>
         </thead>
         <tbody>
+          <tr class="results-group-row"><th colspan="9" scope="rowgroup"><span>Closed models</span></th></tr>
           <tr>
             <th scope="row">GPT-5</th>
-            <td>8.0</td><td>16.0</td><td><b>48.0</b></td><td>0.0</td><td>8.0</td><td>2.4</td><td><b>32.0</b></td><td>16.3</td>
+            <td>8.0</td><td>16.0</td><td>48.0</td><td>0.0</td><td>8.0</td><td>2.4</td><td>36.0</td><td>16.9</td>
           </tr>
           <tr>
             <th scope="row">Claude Sonnet 4.5</th>
-            <td>4.0</td><td>4.0</td><td>16.0</td><td><b>4.0</b></td><td>4.0</td><td>10.8</td><td>8.0</td><td>7.3</td>
+            <td>4.0</td><td>4.0</td><td>16.0</td><td>4.0</td><td>4.0</td><td>10.8</td><td>4.0</td><td>6.7</td>
+          </tr>
+          <tr>
+            <th scope="row">Gemini 2.5 Flash</th>
+            <td>12.0</td><td>28.0</td><td>36.0</td><td>0.0</td><td>8.0</td><td>24.0</td><td>8.0</td><td>16.6</td>
+          </tr>
+          <tr>
+            <th scope="row">GPT-6.1 Sol</th>
+            <td>24.0</td><td>24.0</td><td>40.0</td><td>24.0</td><td>44.0</td><td>6.8</td><td>40.0</td><td>29.0</td>
           </tr>
           <tr class="best-model-row">
-            <th scope="row">Gemini 2.5 Flash</th>
-            <td><b>12.0</b></td><td><b>28.0</b></td><td>36.0</td><td>0.0</td><td>8.0</td><td><b>24.0</b></td><td>12.0</td><td><b>17.1</b></td>
+            <th scope="row">GPT-6 Astra</th>
+            <td><b>40.0</b></td><td><b>52.0</b></td><td><b>56.0</b></td><td><b>44.0</b></td><td><b>52.0</b></td><td>6.8</td><td><b>56.0</b></td><td><b>43.8</b></td>
           </tr>
+          <tr>
+            <th scope="row">Claude Sonnet 5.5</th>
+            <td>32.0</td><td>20.0</td><td>44.0</td><td>16.0</td><td>40.0</td><td>27.6</td><td>24.0</td><td>29.1</td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr class="results-group-row"><th colspan="9" scope="rowgroup"><span>Open models</span></th></tr>
           <tr>
             <th scope="row">Qwen2.5-VL-32B-Instruct</th>
             <td>4.0</td><td>16.0</td><td>20.0</td><td>0.0</td><td>0.0</td><td>18.8</td><td>4.0</td><td>9.0</td>
           </tr>
           <tr>
             <th scope="row">InternVL3.5-8B</th>
-            <td>4.0</td><td>20.0</td><td>20.0</td><td>0.0</td><td><b>12.0</b></td><td>2.8</td><td>0.0</td><td>8.4</td>
+            <td>8.0</td><td>16.0</td><td>12.0</td><td>0.0</td><td>4.0</td><td>2.0</td><td>0.0</td><td>6.0</td>
           </tr>
           <tr>
             <th scope="row">InternVL3.5-38B</th>
-            <td>0.0</td><td>16.0</td><td>0.0</td><td>0.0</td><td><b>12.0</b></td><td>7.2</td><td>4.0</td><td>5.6</td>
+            <td>4.0</td><td>4.0</td><td>12.0</td><td>0.0</td><td>8.0</td><td>20.4</td><td>0.0</td><td>6.9</td>
           </tr>
+          <tr>
+            <th scope="row">Qwen3.5-9B</th>
+            <td>4.0</td><td>24.0</td><td>0.0</td><td>0.0</td><td>8.0</td><td>8.0</td><td>4.0</td><td>6.9</td>
+          </tr>
+          <tr>
+            <th scope="row">Qwen3.5-27B</th>
+            <td>8.0</td><td>20.0</td><td>4.0</td><td>0.0</td><td>24.0</td><td>9.6</td><td>4.0</td><td>9.9</td>
+          </tr>
+          <tr>
+            <th scope="row">Qwen3.8-27B</th>
+            <td>0.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>20.0</td><td>10.4</td><td>16.0</td><td>11.2</td>
+          </tr>
+          <tr>
+            <th scope="row">Gemma-4-12B-it</th>
+            <td>0.0</td><td>16.0</td><td>32.0</td><td>0.0</td><td>8.0</td><td>7.6</td><td>0.0</td><td>9.1</td>
+          </tr>
+          <tr>
+            <th scope="row">Gemma-4-31B-it</th>
+            <td>8.0</td><td>20.0</td><td>44.0</td><td>0.0</td><td>28.0</td><td><b>30.8</b></td><td>16.0</td><td>21.0</td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr class="results-group-row"><th colspan="9" scope="rowgroup"><span>Human baseline</span></th></tr>
           <tr class="human-row">
-            <th scope="row">Human</th>
+            <th scope="row">Local experts</th>
             <td>68.0</td><td>64.0</td><td>92.0</td><td>92.0</td><td>88.0</td><td>45.2</td><td>92.0</td><td>77.3</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="results-table-caption">
-      <b>Table 2: Overall Results (%).</b> Comparison of model and human performance across seven spatial and reasoning
-      tasks, grouped into three major categories. Gemini 2.5 Flash achieves the highest overall performance, while the
-      strongest model varies across individual tasks. All LMMs still fall far short of human performance.
+    <p class="results-table-caption" id="results-caption">
+      <b>Overall results (%).</b> Each task type contains 25 tasks. Scores are success rate (SR) for six task types
+      and mean relative accuracy (MRA) for Object Count. Mean is the equal-weight average of the seven unrounded
+      scores. Unanswered tasks receive zero. Bold values indicate the best model score in each column.
     </p>
+
+    <details class="results-methodology">
+      <summary>Evaluation details</summary>
+      <div class="content">
+        <p>
+          Model agents use a memory-augmented ReAct-style framework. Generation settings vary by model.
+          Object Count uses MRA over ten thresholds from 0.50 to 0.95 in increments of 0.05.
+          Relational Spatial Reasoning uses a shared semantic-match judge
+          (Azure OpenAI <code>gpt-6-luna</code>, reasoning effort <code>medium</code>).
+          Empty and unsubmitted answers receive zero and remain in the denominator.
+        </p>
+        <p>
+          The human baseline measures task performance by five participants familiar with Akihabara;
+          it does not represent the general population.
+          See the <a href="https://github.com/360MM-Team/360CityArena/blob/main/docs/evaluation_protocol.md" target="_blank" rel="noopener">evaluation protocol</a>
+          for task scoring rules.
+        </p>
+      </div>
+    </details>
 
     <div class="result-findings">
       <article class="result-finding">
-        <h3>F1: LMMs perform far below human level.</h3>
+        <h3>A substantial gap to local experts remains.</h3>
         <p>
-          All LMMs fall far short of human performance across the benchmark. Gemini 2.5 Flash achieves the highest
-          overall performance among the evaluated models, while the strongest model varies across individual tasks.
+          GPT-6 Astra leads with a mean score of 43.8%, compared with 77.3% for local experts.
+          It achieves the best model score on six of seven task types. Gemma-4-31B-it leads the open models
+          with a mean score of 21.0% and achieves the highest model Object Count score, 30.8%.
         </p>
       </article>
       <article class="result-finding">
-        <h3>F2: Image-based landmark search is consistently easier than language-based search.</h3>
+        <h3>Image cues help most models find landmarks.</h3>
         <p>
-          Across models, Landmark Search with Image generally outperforms Landmark Search with Text (e.g., GPT-5:
-          48.0 vs. 16.0; Claude: 16.0 vs. 4.0; Qwen: 20.0 vs. 16.0), suggesting that visual inputs provide concrete cues.
+          Image-based landmark search outperforms language-based search in 11 of 14 models.
+          For example, GPT-6 Astra scores 56.0% vs. 52.0%, and Gemma-4-31B-it scores 44.0% vs. 20.0%.
+          The pattern does not hold for InternVL3.5-8B or Qwen3.5-9B and 27B.
         </p>
       </article>
       <article class="result-finding">
-        <h3>F3: Performance decreases as task difficulty increases.</h3>
+        <h3>Map-guided navigation remains challenging.</h3>
         <p>
-          Model performance generally declines with higher task difficulty. GPT-5&rsquo;s accuracy in Environment
-          Understanding drops from 28.0 to 25.0 to 18.5, and in Path Reasoning from 11.1 to 0.0 to 0.0 across the Easy,
-          Medium, and Hard settings.
+          All eight open models score 0.0% on Map Navigation. The best model, GPT-6 Astra, reaches 44.0%,
+          compared with 92.0% for local experts. Following a map through the captured city remains difficult
+          even for models that succeed at finding landmarks.
         </p>
       </article>
     </div>
