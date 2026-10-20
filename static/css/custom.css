@@ -268,12 +268,34 @@ hr.section-rule {
   scrollbar-color: #a8b6c5 #eef2f6;
 }
 
+.results-table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 0.65rem;
+  font-size: 0.85rem;
+}
+
+.results-table-tools a,
+.results-methodology a {
+  color: var(--arena-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .results-scroll-hint {
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: #566473;
+  font-size: 0.8rem;
 }
 
 .results-table {
-  min-width: 1020px;
+  min-width: 920px;
   margin-bottom: 0 !important;
   font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
@@ -290,8 +312,27 @@ hr.section-rule {
 .results-table thead tr:first-child th:first-child,
 .results-table tbody th:first-child {
   text-align: left !important;
-  padding-left: 0.35rem !important;
-  padding-right: 0.35rem !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.results-table thead tr:first-child th:first-child,
+.results-table tbody tr:not(.results-group-row) > th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.results-table tbody tr:not(.results-group-row) > th {
+  background: #fff;
+}
+
+.results-table .results-group-row th {
+  background: #eaf0f6;
+  color: #34485c;
+  padding-block: 0.45rem !important;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .results-table thead tr:first-child th {
@@ -314,7 +355,8 @@ hr.section-rule {
   font-weight: 600;
 }
 
-.results-table .best-model-row {
+.results-table .best-model-row,
+.results-table tbody tr.best-model-row > th {
   background: #edf4fb;
 }
 
@@ -324,8 +366,14 @@ hr.section-rule {
   font-weight: 700;
 }
 
-.results-table .human-row th {
+.results-table tbody tr.human-row > th {
+  background: #eaf5ec;
   color: #244a2d;
+}
+
+.results-table abbr {
+  text-decoration: none;
+  cursor: help;
 }
 
 .results-table-caption {
@@ -335,6 +383,25 @@ hr.section-rule {
   font-size: 0.84rem;
   line-height: 1.55;
   text-align: center;
+}
+
+.results-methodology {
+  margin-top: 1.5rem;
+  color: #4b5866;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.results-methodology summary {
+  width: fit-content;
+  cursor: pointer;
+  color: #23364a;
+  font-weight: 700;
+}
+
+.results-methodology .content {
+  max-width: 75ch;
+  margin-top: 0.75rem;
 }
 
 .result-findings {
@@ -378,7 +445,10 @@ hr.section-rule {
   line-height: 1.65;
 }
 
-.results-table-wrap:focus-visible {
+.results-table-wrap:focus-visible,
+.results-table-tools a:focus-visible,
+.results-methodology summary:focus-visible,
+.results-methodology a:focus-visible {
   outline: 3px solid rgba(43, 108, 176, 0.45);
   outline-offset: 4px;
 }
@@ -393,14 +463,13 @@ hr.section-rule {
     grid-template-columns: 1fr;
   }
 
-  .results-scroll-hint {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.4rem;
-    margin: 0 0 0.55rem;
-    color: #566473;
-    font-size: 0.8rem;
+  .results-table thead tr:first-child th:first-child,
+  .results-table tbody tr:not(.results-group-row) > th {
+    width: 9rem;
+    min-width: 9rem;
+    max-width: 9rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
 }
@@ -417,12 +486,12 @@ hr.section-rule {
   }
 
   .comparison-label {
-    min-height: 3.9em;
+    min-height: 2.6em;
     font-size: 0.83rem;
   }
 
   .comparison-number {
-    font-size: clamp(2.65rem, 15vw, 3.65rem);
+    font-size: clamp(1.8rem, 9vw, 2.65rem);
   }
 
   .comparison-vs {

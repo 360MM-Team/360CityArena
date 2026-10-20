@@ -1,0 +1,16 @@
+group,model,localization_sr_pct,landmark_language_sr_pct,landmark_image_sr_pct,map_navigation_sr_pct,vision_language_navigation_sr_pct,object_count_mra_pct,relational_spatial_reasoning_sr_pct,mean_score_pct
+Closed,GPT-5,8,16,48,0,8,2.4,36,16.914285714285715
+Closed,Claude Sonnet 4.5,4,4,16,4,4,10.8,4,6.685714285714285
+Closed,Gemini 2.5 Flash,12,28,36,0,8,24,8,16.571428571428573
+Closed,GPT-6.1 Sol,24.0,24.0,40.0,24.0,44.0,6.8,40.0,28.97142857142857
+Closed,GPT-6 Astra,40.0,52.0,56.0,44.0,52.0,6.8,56.0,43.82857142857143
+Closed,Claude Sonnet 5.5,32.0,20.0,44.0,16.0,40.0,27.6,24.0,29.085714285714285
+Open,Qwen2.5-VL-32B-Instruct,4,16,20,0,0,18.8,4,8.971428571428572
+Open,InternVL3.5-8B,8.0,16.0,12.0,0.0,4.0,2.0,0.0,6.0
+Open,InternVL3.5-38B,4.0,4.0,12.0,0.0,8.0,20.4,0.0,6.914285714285714
+Open,Qwen3.5-9B,4.0,24.0,0.0,0.0,8.0,8.0,4.0,6.857142857142857
+Open,Qwen3.5-27B,8.0,20.0,4.0,0.0,24.0,9.6,4.0,9.942857142857141
+Open,Qwen3.8-27B,0.0,12.0,20.0,0.0,20.0,10.4,16.0,11.200000000000001
+Open,Gemma-4-12B-it,0.0,16.0,32.0,0.0,8.0,7.6,0.0,9.085714285714285
+Open,Gemma-4-31B-it,8.0,20.0,44.0,0.0,28.0,30.8,16.0,20.97142857142857
+Human,Local experts,68,64,92,92,88,45.2,92,77.31428571428572
