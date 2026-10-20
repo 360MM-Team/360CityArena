@@ -286,7 +286,7 @@ hr.section-rule {
 }
 
 .results-scroll-hint {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 0.4rem;
   margin: 0;
@@ -333,6 +333,11 @@ hr.section-rule {
   padding-block: 0.45rem !important;
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+.results-group-row span {
+  position: sticky;
+  left: 0.75rem;
 }
 
 .results-table thead tr:first-child th {
@@ -454,6 +459,12 @@ hr.section-rule {
 }
 
 /* ===== Responsive: keep the big title from overflowing narrow screens ===== */
+@media screen and (max-width: 969px) {
+  .results-scroll-hint {
+    display: flex;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .results-summary {
     gap: 1rem;
